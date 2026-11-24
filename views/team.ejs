@@ -1,0 +1,47 @@
+<%- include('partials/header') %>
+<h2><%= team.title %></h2>
+<p><%= team.description %></p>
+<p>Led by <%= team.owner.name %></p>
+
+<h3>Required skills</h3>
+<% team.requiredSkills.forEach(s => { %>
+  <span class="tag <%= s.core ? 'core' : '' %>"><%= s.name %><%= s.core ? ' (core)' : '' %></span>
+<% }) %>
+
+<h3>Team gap analysis</h3>
+<div class="card">
+  <div>Coverage: <strong><%= gaps.coverage %>%</strong> (<%= gaps.covered %> of <%= gaps.total %> required skills)</div>
+  <% if (gaps.missing.length) { %>
+    <div class="missing">Missing: <%= gaps.missing.join(', ') %></div>
+    <% if (gaps.missingCore.length) { %>
+      <div class="missing">Missing core skills: <%= gaps.missingCore.join(', ') %></div>
+    <% } %>
+  <% } else { %>
+    <div>The team covers every required skill.</div>
+  <% } %>
+</div>
+
+<h3>Members</h3>
+<% if (team.members.length === 0) { %><p>No members yet.</p><% } %>
+<% team.members.forEach(m => { %>
+  <div class="card"><strong><%= m.name %></strong></div>
+<% }) %>
+
+<h3>Ranked candidates</h3>
+<p><small>Match score is cosine similarity between the candidate's skills and the team's requirements (0 to 1).</small></p>
+<% if (ranking.length === 0) { %><p>No other users yet.</p><% } %>
+<% ranking.forEach(r => { %>
+  <div class="card">
+    <strong><%= r.candidate.name %></strong>
+    <span>Match: <%= Math.round(r.score * 100) %>%</span>
+    <div>
+      <% (r.candidate.skills || []).forEach(s => { %><span class="tag"><%= s %></span><% }) %>
+    </div>
+    <% if (isOwner) { %>
+      <form method="POST" action="/teams/<%= team._id %>/members/<%= r.candidate._id %>">
+        <button type="submit">Add to team</button>
+      </form>
+    <% } %>
+  </div>
+<% }) %>
+<%- include('partials/footer') %>

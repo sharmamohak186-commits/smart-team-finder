@@ -1,0 +1,14 @@
+<%- include('partials/header') %>
+<h2>New team</h2>
+<% if (error) { %><p class="error"><%= error %></p><% } %>
+<form method="POST" action="/teams">
+  <label>Project title</label>
+  <input name="title" value="<%= form.title || '' %>" required>
+  <label>Description</label>
+  <textarea name="description" rows="3"><%= form.description || '' %></textarea>
+  <label>Required skills</label>
+  <textarea name="requiredSkills" rows="3" placeholder="react*, node*, mongodb, figma" required><%= form.requiredSkills || '' %></textarea>
+  <small>Add * after a core skill. Core skills count double in matching.</small><br><br>
+  <button type="submit">Create team</button>
+</form>
+<%- include('partials/footer') %>

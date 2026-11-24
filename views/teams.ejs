@@ -1,0 +1,12 @@
+<%- include('partials/header') %>
+<h2>Teams</h2>
+<% if (teams.length === 0) { %>
+  <p>No teams yet. <a href="/teams/new">Create the first one.</a></p>
+<% } %>
+<% teams.forEach(team => { %>
+  <div class="card">
+    <a href="/teams/<%= team._id %>"><strong><%= team.title %></strong></a>
+    <div>Led by <%= team.owner ? team.owner.name : 'unknown' %></div>
+  </div>
+<% }) %>
+<%- include('partials/footer') %>

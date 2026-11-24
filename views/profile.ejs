@@ -1,0 +1,17 @@
+<%- include('partials/header') %>
+<h2>Your profile</h2>
+<% if (error) { %><p class="error"><%= error %></p><% } %>
+<form method="POST" action="/profile">
+  <label>Short bio</label>
+  <textarea name="bio" rows="3"><%= form.bio %></textarea>
+  <label>Experience</label>
+  <select name="experience">
+    <% ['beginner', 'intermediate', 'advanced'].forEach(level => { %>
+      <option value="<%= level %>" <%= form.experience === level ? 'selected' : '' %>><%= level %></option>
+    <% }) %>
+  </select>
+  <label>Skills (comma-separated)</label>
+  <textarea name="skills" rows="3" placeholder="React, Node, MongoDB"><%= form.skills %></textarea>
+  <button type="submit">Save profile</button>
+</form>
+<%- include('partials/footer') %>
